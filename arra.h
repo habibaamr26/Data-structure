@@ -4,8 +4,8 @@ template <class t>
 class Array
 {
 	t* element;
-	int size;
-	int lenght;
+	int size;        //to know size the user enter
+	int lenght;      //to know the number of elenemt
 public:
 	Array(int arr_size)
 	{
