@@ -64,7 +64,7 @@ public:
 
 	void Print()
 	{
-		for (int i = top; i >= 0; i--)                    //increment loop don’t show stack in right way
+		for (int i = top; i >= 0; i--)                    //increment loop don’t show stack in correct way
 		{
 			cout << array[i] << " ";
 		}
