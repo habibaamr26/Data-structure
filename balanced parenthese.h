@@ -5,23 +5,23 @@ using namespace std;
 
 bool balanced(string exp)
 {
-	stack<char>x;
+	stack<char>st;
 	for (int i = 0; i < exp.length(); i++)
 	{
-		if (exp[i] == '(' || exp[i] == '{' || exp[i] == '[')
-			x.push(exp[i]);
-		else if (exp[i] == ')' || exp[i] == '}' || exp[i] == ']')
+		if (exp[i] == '(' || exp[i] == '{' || exp[i] == '[')                  // enter left parenthese in stack
+			st.push(exp[i]);
+		else if (exp[i] == ')' || exp[i] == '}' || exp[i] == ']')            
 		{
-			if (x.empty() || !(exp[i] == ')' && x.top() == '(' || exp[i] == ']' && x.top() == '[' || exp[i] == '}' && x.top() == '{'))
+			if (st.empty() || !(exp[i] == ')' && st.top() == '(' || exp[i] == ']' && st.top() == '[' || exp[i] == '}' && st.top() == '{'))
 			{
 				return false;
 			}
 			else
 			{
-				x.pop();
+				st.pop();
 			}
 		}
 	}
-	return x.empty();
+	return st.empty();
 
 }
