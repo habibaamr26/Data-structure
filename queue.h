@@ -58,12 +58,17 @@ public:
 		  return array[rear];
 	  }
 
-	  void display()
-	  {
-		  for (int i = front; i <= rear; i++)
-		  {
-			  cout << array[i] << " ";
-		  }
-		  cout << endl;
-	  }
+	void display()
+	{
+		if (isEmpty())
+			cout << "Empty Queue " << endl;
+		else
+		{
+			for (int i = front; i <= rear; i++)
+			{
+				cout << array[i] << " ";
+			}
+			cout << endl;
+		}
+	}
 };
