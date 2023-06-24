@@ -32,7 +32,7 @@ public:
 		return counter == maxSize;
 	}
 
-	void enqueue(t item)
+	void enqueue(t item)                                     // to add item
 	{
 		if (isFull())
 			cout << "queue is full" << endl;
@@ -44,7 +44,7 @@ public:
 		}
 	}
 	
-	void dequeue()
+	void dequeue()                  // to delet item
 	{
 		if (isEmpty())
 			cout << "queue is empty " << endl;
@@ -55,7 +55,7 @@ public:
 		}
 		
 	}
-	void dequeue(t &item)
+	void dequeue(t &item)                // to delet item and return it’s value
 	{
 		if (isEmpty())
 			cout << "queue is empty " << endl;
@@ -138,7 +138,7 @@ public:
 			return pos + 1;
 		else
 		{
-			cout << "can�t find item " ;
+			cout << "can’t find item " ;
 			return -1;
 		}
 	}
