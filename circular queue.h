@@ -1,8 +1,7 @@
-
+//implement circular queue by dynamic array
 #include <iostream>
 #include <cassert>
 using namespace std;
-//implement circular queue by dynamic array
 template <class t>
 class CircularQueue
 {
