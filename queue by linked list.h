@@ -1,4 +1,4 @@
-
+//implement queue by using linked list
 #include <iostream>
 #include <assert.h>
 using namespace std;
