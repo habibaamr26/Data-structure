@@ -1,137 +1,172 @@
+
+//implemenrt array as an dynamic
 #include <iostream>
 using namespace std;
 template <class t>
-class Array
+class arraylist
 {
-	t* element;
-	int size;        //to know size the user enter
-	int lenght;      //to know the number of elenemt
+	t* element;                   
+	int maxSize;                     // size the user enter
+	int lenght;                     // number of element in array
 public:
-	Array(int arr_size)
+	arraylist(int size=10)
 	{
-		element = new int[arr_size];
-		size = arr_size;
-		lenght = 0;
-	}
-	void Fill()
-	{
-		cout << "How many item you need to fill" << endl;
-		int arr_size;
-		cin >> arr_size;
-		if (arr_size > size)
+		if (size <= 0)
 		{
-			cout << "You cant exceed the array size" << endl;
-			
+			cout << "this size is wrong" << endl;
+			maxSize = 100;
 		}
 		else
 		{
-			for (int i = 0; i < arr_size; i++)
-			{
-				cout <<"Enter the item number " << i + 1 << " please" << endl;
-				cin >> element[i];
-				lenght++;
-			}
+			maxSize = size;
 		}
+		element = new int[size];
+		lenght = 0;
+	}
+	bool isEmpty()
+	{
+		return lenght == 0;
+	}
 
-	}
-	void Display()
+	bool isFull()
 	{
-		cout << "Display array content" << endl;
-		for (int i = 0; i < lenght; i++)
-			cout << element[i] << "\t";
-		cout << endl;
+		return lenght == maxSize;
 	}
-	int getsize()
-	{
-		return size;
-	}
-	int getlenght()
+	int getlenght()                                 //return number of element in the array
 	{
 		return lenght;
 	}
-	int Search(t item)  //search by value
+
+	void print()
 	{
-		int index=-1;
-		for (int i = 0; i < lenght; i++)
+		for (int i =0 ; i < lenght; i++)
 		{
-			if (element[i] == item)
-				index = i;
+			cout << element[i] << endl;
 		}
-		return index;
 	}
-	void Append(t newitem)
+	void insertAt(int pos,t item)  
 	{
-		if (lenght >= size)
-			cout << "You cant exceed the array size" << endl;
+		pos = pos - 1;                              // to make user start fron 1 not zero
+		if (isFull())
+		{
+			cout << "array is full" << endl;
+		}
+		else if (pos<0 || pos>lenght)
+			cout << "cant enter element in this place" << endl;
 		else
 		{
-			element[lenght] = newitem;
-			lenght++;
-		}
-	}
-	void Insert(t newitem,int index)   //to add item at any place
-	{
-		if (index<0 && index >= size)
-			cout << "Index out of range" << endl;
-		else {
-			for (int i = lenght; i > index; i--)
+			for (int i = lenght; i > pos; i--)
 			{
-				element[i] = element[i - 1];
-
+				element[i] = element[i-1];   
 			}
-			element[index] = newitem;
+			 element[pos]=  item;
 			lenght++;
 		}
 	}
-	void Delete(int index)
+
+	void removeAt(int pos)                     //index as input
 	{
-		if (index<0 && index >= size)
-			cout << "Index out of range" << endl;
-		else {
-			for (int i = index; i < lenght - 1; i++)
+		pos = pos - 1;
+		if (isEmpty())
+			cout << "The list is empty" << endl;
+		else if (pos<0||pos > lenght)
+			cout << "Therer is no element to remove" << endl;
+		else
+		{
+			for (int i = pos; i < lenght; i++)
 			{
-				element[i] = element[i + 1];
+					element [i] = element[i + 1];
 			}
 			lenght--;
 		}
 	}
-	void Enlarge(int newsize)           //to increase size of array by make a new array by large size and copy item
+	void remove(t item)                     
 	{
-		if (newsize <= size)
-		{
-			cout << "New size must be larger" << endl;
-			return;
-		}
-
+		
+		if (isEmpty())
+			cout << "The list is empty" << endl;
 		else
 		{
-			t* old = element;
-			element = new int[newsize];
+			int x = search(item);
+			if (x == -1)
+				cout << "The element is not in the list" << endl;
+			else
+			    removeAt(x+1);
+		}
+	}
+
+	int search(t item)
+	{
+		
 			for (int i = 0; i < lenght; i++)
 			{
-				element[i]=old[i];
+				if (element[i] == item)
+					return i;
 			}
-			size = newsize;
-			delete [] old;
+			return -1;
+		
+	}
+
+	void insertAtEnd(t item)
+	{
+		if (isFull())
+			cout << "The list is full" << endl;
+		else
+		    element[lenght++] = item;
+	}
+	void removeAtEnd()
+	{
+		if (isEmpty())
+			cout << "The list is empty" << endl;
+		else
+			lenght--;
+	}
+	void insertNoDuplicate(t item)
+	{
+		int isFound = search(item);
+		if (isFull())
+			cout << "The list is full" << endl;
+		else
+		{
+			
+			if (isFound == -1)
+				element[lenght++] = item;
+			else
+				cout << "the item is found in the list" << endl;
 		}
 	}
-	void Merge(Array other)
+
+	void updateAt(int pos, t item)
 	{
-		int newsize = size + other.getsize();
-		size = newsize;
-		t* old = element;
-		element = new int[newsize];
-		int i;
-		for (i = 0; i < lenght; i++)
+		if (isEmpty())
+			cout << "the list is empty" << endl;
+		else if (pos<0 || pos>lenght)
+			cout << "Out of the range" << endl;
+		else
+			element[pos-1] = item;
+	}
+
+	t getElement(int pos)
+	{
+		pos = pos - 1;
+		if(isEmpty())
+			cout << "The list is empty" << endl;
+		else if (pos<0 || pos>lenght)
+			cout << "Out of the range" << endl;
+		else
 		{
-			element[i] = old[i];
+			return element[pos];
 		}
-		delete[]old;
-		int j = i;
-		for (i = 0; i < other.getlenght(); i++)
-		{
-			element[j++] = other.element[i];
-			lenght++;
-		}
+	}
+
+	void clear()
+	{
+		lenght = 0;
+	}
+
+	~arraylist()
+	{
+		delete[]element;
 	}
 };
+
