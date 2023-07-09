@@ -1,238 +1,333 @@
 
-
-
+// implement linked list by one pointer
 #include <iostream>
+#include <assert.h>
 using namespace std;
-struct node
+template <class t>
+class LinkedList
 {
-	int data;
-	node* next;
-};
-class Linked_List
-{
-	node* head;
-
+	struct Node
+	{
+		t data;
+		Node* next;
+	};
+	Node* head;
+	int length;
 public:
-	Linked_List()
+	LinkedList()
 	{
 		head = NULL;
+		length = 0;
 	}
-	node* Creat()
+	bool isEmpty()
 	{
-		node* pointer = new node;
-		return pointer;
+		return head == NULL;
 	}
-	bool Is_empty()
+
+	void insertFirst(t item)
 	{
-		if (head == NULL)
+		Node* element = new Node;
+		element->data = item;
+		if (isEmpty())
+		{
+			head = element;
+			element->next = NULL;
+		}
+		else
+		{
+			element->next = head;
+			head = element;
+		}
+		length++;
+	}
+	void insertLast(t item)
+	{
+		Node* element = new Node;
+		Node* toCheck = new Node;
+		toCheck = head;
+		element->data = item;
+		element->next = NULL;
+		if (isEmpty())
+		{
+			insertFirst(item);
+		}
+		else
+		{
+			while (toCheck->next != NULL)
+			{
+				toCheck = toCheck->next;
+			}
+			toCheck->next = element;
+			length++;
+		}
+		
+	}
+
+	void insertAt(int pos, t item)
+	{
+		pos = pos - 1;
+		if (pos<0 || pos>length)
+			cout << "Out of the range" << endl;
+		else
+		{
+			if (pos == 0)
+				insertFirst(item);
+			else if (pos == length)
+				insertLast(item);
+			else
+			{
+				Node* element = new Node;
+				Node* toCheck = new Node;
+				toCheck = head;
+				element->data = item;
+				for (int i = 1; i < pos; i++)
+				{
+					toCheck = toCheck->next;
+				}
+				element->next = toCheck->next;
+				toCheck->next = element;
+				length++;
+			}
+		}
+	}
+	void print()
+	{
+		Node* element = new Node;
+		element = head;
+		while(element!=NULL)
+		{
+			cout << element->data << " ";
+			element = element->next;
+		}
+	}
+
+
+	void removeFirst()
+	{
+		Node* toRemove = head;
+		if (isEmpty())
+			cout << "The list is empty" << endl;
+		else if (length == 1)
+		{
+			head->next = NULL;
+			length--;
+		}
+		else
+		{
+			head = head->next;
+			length--;
+		}
+		delete toRemove;
+	}
+
+	void removeLast()
+	{
+		
+		if (isEmpty())
+		{
+			cout << "The list is empty" << endl;
+		}
+		else if (length == 1)
+		{
+			length--;
+			delete head;
+		}
+		else
+		{
+			Node* toDelete = head->next;
+			Node* toCheck = head;
+			while (toDelete->next!= NULL)
+			{
+				toCheck = toDelete;
+				toDelete = toDelete->next;
+			}
+			toCheck->next = NULL;
+			delete toDelete;
+			length--;
+		}
+	}
+	int search(t item)
+	{
+		Node* pointer = head;
+		int counter = 0;
+		while (pointer != NULL)
+		{
+			if (pointer->data == item)
+				return counter;
+			counter++;
+			pointer = pointer->next;
+
+		}
+		return -1;
+	}
+
+	void removeByIndex(int pos)             //remove by index;
+	{
+		if (isEmpty())
+		{
+			cout << "The list is empty" << endl;
+		}
+		else
+		{
+			pos = pos - 1;
+			if (pos<0 || pos>length)
+				cout << "Out of the range" << endl;
+			else
+			{
+				if (pos == 0)
+					removeFirst();
+				else if (pos == length)
+					removeLast();
+				else
+				{
+					Node* toRemove = head->next;
+					Node* toHold = head;
+					for (int i = 1; i < pos; i++)
+					{
+						toHold = toRemove;
+						toRemove = toRemove->next;
+					}
+					toHold->next = toRemove->next;
+					delete toRemove;
+					length--;
+				}
+			}
+		}
+	}
+	
+
+	void removeByElement(t item)                     //remove by item
+	{
+		if (isEmpty())
+			cout << "The list is empty" << endl;
+		else
+		{
+			int pos = search(item);
+			if (pos == -1)
+				cout << "the element not found" << endl;
+			else
+			{
+
+				if (pos == 0)
+					removeFirst();
+				else if (pos == length)
+					removeLast();
+				else
+				{
+					Node* toRemove = head->next;
+					Node* toHold = head;
+					for (int i = 1; i < pos; i++)
+					{
+						toHold = toRemove;
+						toRemove = toRemove->next;
+					}
+					toHold->next = toRemove->next;
+					delete toRemove;
+					length--;
+				}
+			}
+		}
+	}
+
+	//instead of this 2 function you can make 2 in one
+	void remove()
+	{
+		if (isEmpty())
+			cout << "The list is empty" << endl;
+		else
+		{
+			int pos;
+			int check;
+			cout << "If you want to remove at position enter one \nIf you want to remove a spicefic element you don’ know it’s position enter 2" << endl;
+			cin >> check;
+			if (check == 1)
+			{
+
+				cout << "enter pos" << endl;
+				cin >> pos;
+				pos--;
+			}
+			else if (check == 2)
+			{
+				t item;
+				cout << "enter item pleas" << endl;
+				cin >> item;
+				pos = search(item);
+			}
+			else
+			{
+				assert(check == 1 || check == 2);
+
+			}
+			// start to check on position
+			if (pos<0 || pos>length)
+				cout << "Out of the range" << endl;
+			else
+			{
+				if (pos == 0)
+					removeFirst();
+				else if (pos == length)
+					removeLast();
+				else
+				{
+					Node* toRemove = head->next;
+					Node* toHold = head;
+					for (int i = 1; i < pos; i++)
+					{
+						toHold = toRemove;
+						toRemove = toRemove->next;
+					}
+					toHold->next = toRemove->next;
+					delete toRemove;
+					length--;
+				}
+			}
+		}
+
+
+	}
+	
+	bool isFound(t item)
+	{
+		int isfound = search(item);
+		if (isfound != -1)
 			return 1;
 		else
 			return 0;
-
-		//return (head==NULL);
 	}
 
-
-	void Display()
+	void reverse()
 	{
-		//by traverse
-		node* dis = Creat();
-		dis = head;
-		while (dis != NULL)
+		Node* next = head->next;
+		Node* current = head;
+		Node* prev = NULL;
+		while (next != NULL)
 		{
-			cout << dis->data <<" ";
-			dis = dis->next;
+			next = current->next;
+			current->next = prev;
+			prev = current;
+			current = next;
 		}
+		head = prev;
 	}
-
-	int Count()
+	void clear()
 	{
-		int counter = 0;                             //to count how many element in liked list
-		//by traverse
-		node* dis = Creat();
-		dis = head;
-		while (dis != NULL)
+		Node* current;
+		while (head != NULL)
 		{
-			counter++;
-			dis = dis->next;
+			current = head;
+			head = head->next;
+			delete current;
 		}
-		return counter;
+		length = 0;
 	}
-
-	bool Is_found(int x)
+	~LinkedList()
 	{
-		node* dis = Creat();
-		dis = head;
-		while (dis != NULL)
-		{
-			if (dis->data == x)
-				return 1;
-			dis = dis->next;
-		}
-		return 0;
+		clear();
 	}
-	// 3 function to insert
-	void Insert_First(int data);
-	void  Insert_Before(int item, int data);
-	void Append(int data);                                   //to inert last
-
-	//3 function to delet
-
-	void DeleteFirst();
-	void DeleteLast();
-	void DeleteItem(int item);
-
-	//one function to delete  instead of 3 function bu knowing the element
-
-	void Delete(int item);
-
+	int getLenght()
+	{
+		return length;
+	}
 };
-void Linked_List::Insert_First(int data)
-{
-	node* NewNode = Creat();
-	NewNode->data = data;
-	if (Is_empty())
-	{
-		head = NewNode;
-		NewNode->next = NULL;
-	}
-	else
-	{
-		NewNode->next = head;
-		head = NewNode;
-	}
-}
 
-void Linked_List::Insert_Before(int item, int data)
-{
-	if (Is_empty())
-	{
-		Insert_First(data);
-	}
-    if (Is_found(item))
-	{
-		node* New = Creat();
-		New->data = data;
-		node* found = Creat();
-		found = head;
-		while (found->next->data != item && found != NULL) {
-			found = found->next;
-		}
-		New->next = found->next;
-		found->next = New;
-	}
-	else
-		cout << "Sorry item is not found" << endl;
-}
-
-void Linked_List::Append(int data)
-{
-	if (Is_empty())
-		Insert_First(data);
-	else
-	{
-		node* newelement = Creat();
-		newelement->data = data;
-		newelement->next = NULL;
-		node* traverse = Creat();
-		traverse = head;
-		while (traverse->next != NULL)
-		{
-			traverse = traverse->next;
-		}
-		traverse->next = newelement;
-	}
-}
-
-
-void Linked_List::DeleteFirst()
-{
-	node* check = Creat();
-	check = head;
-	if (Is_empty())
-		cout << "Sorry it�s no item to delete list id empty" << endl;
-	if (check->next == NULL)
-		head = NULL;
-	
-	else
-	  head = check->next;
-
-	delete(check);
-}
-
-void Linked_List::DeleteLast()
-{
-	if (Is_empty())
-		cout << "there is no element" << endl;
-	if (head->next == NULL)
-		DeleteFirst();
-	else
-	{
-		node* remove = Creat();    // hold node you want to remove
-		node* check = Creat();             //hold the previous node
-		check = remove = head;
-		while (remove->next != NULL)
-		{
-			check = remove;
-			remove = remove->next;
-
-		}
-		check->next = NULL;
-		delete(remove);
-	}
-}
-
-
-void Linked_List::DeleteItem(int item)
-{
-	node* pointer = Creat();
-	if (pointer->next == NULL)
-		DeleteFirst();
-	else
-	{
-		node* remove = Creat();    // hold node you want to remove
-		node* check = Creat();             //hold the previous node
-		check = remove = head;
-		while (remove->data != item)
-		{
-			check = remove;
-			remove = remove->next;
-
-		}
-		check->next = remove->next;
-		delete(remove);
-	}
-
-
-}
-
-
-void Linked_List::Delete(int item)
-{
-	if (Is_empty())
-		cout << "there is no element to delete" << endl;
-
-	if (head->data == item)
-	{
-		node* check = Creat();
-		check = head;
-		head = head->next;
-		delete(check);
-	}
-	else
-	{
-		node* remove = Creat();    // hold node you want to remove
-		node* check = Creat();             //hold the previous node
-		check = head;
-	  remove = head;
-		while (remove->data != item)
-		{
-			check = remove;
-			remove = remove->next;
-
-		}
-		check->next = remove->next;
-		delete(remove);
-
-	}
-}
