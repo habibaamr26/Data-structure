@@ -191,7 +191,7 @@ public:
 		cout << endl;
 	}
 
-void clear()
+        void clear()
 	{
 		Node* clear;
 		while (head != NULL)
