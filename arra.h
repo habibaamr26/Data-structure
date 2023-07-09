@@ -13,14 +13,14 @@ public:
 	{
 		if (size <= 0)
 		{
-			cout << "this size is wrong" << endl;
+			cout << "this size is wrong" << endl<<" the program put an defult size =100"<<endl;
 			maxSize = 100;
 		}
 		else
 		{
 			maxSize = size;
 		}
-		element = new int[size];
+		element = new t[size];
 		lenght = 0;
 	}
 	bool isEmpty()
@@ -73,7 +73,7 @@ public:
 			cout << "Therer is no element to remove" << endl;
 		else
 		{
-			for (int i = pos; i < lenght; i++)
+			for (int i = pos; i < lenght-1; i++)
 			{
 					element [i] = element[i + 1];
 			}
@@ -123,12 +123,12 @@ public:
 	}
 	void insertNoDuplicate(t item)
 	{
-		int isFound = search(item);
+		
 		if (isFull())
 			cout << "The list is full" << endl;
 		else
 		{
-			
+			int isFound = search(item);
 			if (isFound == -1)
 				element[lenght++] = item;
 			else
