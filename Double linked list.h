@@ -190,5 +190,18 @@ public:
 		} while (element!=NULL);
 		cout << endl;
 	}
+
+void clear()
+	{
+		Node* clear;
+		while (head != NULL)
+		{
+			clear = head;
+			head = head->next;
+			delete clear;
+		}
+		tail = NULL;
+		counter = 0;
+	}
 };
 
