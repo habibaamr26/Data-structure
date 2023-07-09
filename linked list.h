@@ -1,5 +1,5 @@
 
-// implement linked list by one pointer
+//implement linked list by using one pointer (head)
 #include <iostream>
 #include <assert.h>
 using namespace std;
@@ -42,17 +42,18 @@ public:
 	}
 	void insertLast(t item)
 	{
-		Node* element = new Node;
-		Node* toCheck = new Node;
-		toCheck = head;
-		element->data = item;
-		element->next = NULL;
+		
 		if (isEmpty())
 		{
 			insertFirst(item);
 		}
 		else
 		{
+			Node* element = new Node;
+			Node* toCheck = new Node;
+			toCheck = head;
+			element->data = item;
+			element->next = NULL;
 			while (toCheck->next != NULL)
 			{
 				toCheck = toCheck->next;
@@ -65,7 +66,7 @@ public:
 
 	void insertAt(int pos, t item)
 	{
-		pos = pos - 1;
+		pos = pos - 1;                                      //to make user start from 1 not 0
 		if (pos<0 || pos>length)
 			cout << "Out of the range" << endl;
 		else
@@ -104,20 +105,23 @@ public:
 
 	void removeFirst()
 	{
-		Node* toRemove = head;
+		
 		if (isEmpty())
 			cout << "The list is empty" << endl;
 		else if (length == 1)
 		{
-			head->next = NULL;
+			
+			delete head;
+			head = NULL;
 			length--;
 		}
 		else
 		{
+			Node* current = head;
 			head = head->next;
-			length--;
+			delete current;
+				length--;
 		}
-		delete toRemove;
 	}
 
 	void removeLast()
@@ -146,20 +150,7 @@ public:
 			length--;
 		}
 	}
-	int search(t item)
-	{
-		Node* pointer = head;
-		int counter = 0;
-		while (pointer != NULL)
-		{
-			if (pointer->data == item)
-				return counter;
-			counter++;
-			pointer = pointer->next;
-
-		}
-		return -1;
-	}
+	
 
 	void removeByIndex(int pos)             //remove by index;
 	{
@@ -170,13 +161,13 @@ public:
 		else
 		{
 			pos = pos - 1;
-			if (pos<0 || pos>length)
+			if (pos<0 || pos>=length)
 				cout << "Out of the range" << endl;
 			else
 			{
 				if (pos == 0)
 					removeFirst();
-				else if (pos == length)
+				else if (pos == length)                         
 					removeLast();
 				else
 				{
@@ -198,38 +189,47 @@ public:
 
 	void removeByElement(t item)                     //remove by item
 	{
-		if (isEmpty())
-			cout << "The list is empty" << endl;
+		if (isEmpty()||!isFound(item))
+		{
+			cout << "The element not found" << endl;
+			return;
+		}
+		if (head->data == item)
+			removeFirst();
 		else
 		{
-			int pos = search(item);
-			if (pos == -1)
-				cout << "the element not found" << endl;
-			else
+			Node* element=head;
+			Node* current = head->next;
+			while (current != NULL)
 			{
-
-				if (pos == 0)
-					removeFirst();
-				else if (pos == length)
-					removeLast();
-				else
+				if (current->data == item)
 				{
-					Node* toRemove = head->next;
-					Node* toHold = head;
-					for (int i = 1; i < pos; i++)
-					{
-						toHold = toRemove;
-						toRemove = toRemove->next;
-					}
-					toHold->next = toRemove->next;
-					delete toRemove;
-					length--;
+					break;
 				}
+				element = current;
+				current = current->next;
 			}
+			element->next = current->next;
+			delete current;
+			length--;
 		}
 	}
 
-	//instead of this 2 function you can make 2 in one
+	//instead of this 2 function (removeByElement and removeByIndex) you can make 2 in one by using search
+	int search(t item)
+	{
+		Node* pointer = head;
+		int counter = 0;
+		while (pointer != NULL)
+		{
+			if (pointer->data == item)
+				return counter;
+			counter++;
+			pointer = pointer->next;
+
+		}
+		return -1;
+	}
 	void remove()
 	{
 		if (isEmpty())
@@ -260,13 +260,13 @@ public:
 
 			}
 			// start to check on position
-			if (pos<0 || pos>length)
+			if (pos<0 || pos>=length)
 				cout << "Out of the range" << endl;
 			else
 			{
 				if (pos == 0)
 					removeFirst();
-				else if (pos == length)
+				else if (pos == length )
 					removeLast();
 				else
 				{
