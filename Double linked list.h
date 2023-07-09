@@ -203,5 +203,9 @@ public:
 		tail = NULL;
 		counter = 0;
 	}
+        ~DoubleLinkedList()
+	{
+		clear();
+	}
 };
 
